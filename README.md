@@ -21,6 +21,9 @@ Create a folder named Wiegand in Arduino's libraries folder.  You will have the 
 
 ## Arduino Sketch
 
+![alt text](http://www.monkeyboard.org/images/tutorials/wiegand/wiegand_arduino.png "RFID Reader to Arduino connection diagram")
+
+
 Execute Arduino IDE, select Example-->Wiegand-->WiegandTest
 
 ### Example
