@@ -1,12 +1,11 @@
 #include "Wiegand.h"
 
-unsigned long WIEGAND::_cardTempHigh=0;
-unsigned long WIEGAND::_cardTemp=0;
-unsigned long WIEGAND::_lastWiegand=0;
-unsigned long WIEGAND::_sysTick=0;
+volatile unsigned long WIEGAND::_cardTempHigh=0;
+volatile unsigned long WIEGAND::_cardTemp=0;
+volatile unsigned long WIEGAND::_lastWiegand=0;
 unsigned long WIEGAND::_code=0;
-int 		  WIEGAND::_bitCount=0;	
-int			  WIEGAND::_wiegandType=0;
+volatile int WIEGAND::_bitCount=0;	
+int WIEGAND::_wiegandType=0;
 
 WIEGAND::WIEGAND()
 {
@@ -24,7 +23,11 @@ int WIEGAND::getWiegandType()
 
 bool WIEGAND::available()
 {
-	return DoWiegandConversion();
+	bool ret;
+    noInterrupts();
+	ret=DoWiegandConversion();
+	interrupts();
+	return ret;
 }
 
 void WIEGAND::begin()
@@ -40,7 +43,6 @@ void WIEGAND::begin(int pinD0, int pinIntD0, int pinD1, int pinIntD1)
 	_code = 0;
 	_wiegandType = 0;
 	_bitCount = 0;  
-	_sysTick=millis();
 	pinMode(pinD0, INPUT);					// Set D0 pin as input
 	pinMode(pinD1, INPUT);					// Set D1 pin as input
 	attachInterrupt(pinIntD0, ReadD0, FALLING);	// Hardware interrupt - high to low pulse
@@ -60,7 +62,7 @@ void WIEGAND::ReadD0 ()
 	{
 		_cardTemp <<= 1;		// D0 represent binary 0, so just left shift card data
 	}
-	_lastWiegand = _sysTick;	// Keep track of last wiegand bit received
+	_lastWiegand = millis();	// Keep track of last wiegand bit received
 }
 
 void WIEGAND::ReadD1()
@@ -78,10 +80,10 @@ void WIEGAND::ReadD1()
 		_cardTemp |= 1;			// D1 represent binary 1, so OR card data with 1 then
 		_cardTemp <<= 1;		// left shift card data
 	}
-	_lastWiegand = _sysTick;	// Keep track of last wiegand bit received
+	_lastWiegand = millis();	// Keep track of last wiegand bit received
 }
 
-unsigned long WIEGAND::GetCardId (unsigned long *codehigh, unsigned long *codelow, char bitlength)
+unsigned long WIEGAND::GetCardId (volatile unsigned long *codehigh, volatile unsigned long *codelow, char bitlength)
 {
 	unsigned long cardID=0;
 
@@ -101,9 +103,9 @@ unsigned long WIEGAND::GetCardId (unsigned long *codehigh, unsigned long *codelo
 bool WIEGAND::DoWiegandConversion ()
 {
 	unsigned long cardID;
+	unsigned long sysTick = millis();
 	
-	_sysTick=millis();
-	if ((_sysTick - _lastWiegand) > 25)								// if no more signal coming through after 25ms
+	if ((sysTick - _lastWiegand) > 25)								// if no more signal coming through after 25ms
 	{
 		if ((_bitCount==26) || (_bitCount==34) || (_bitCount==8)) 	// bitCount for keypress=8, Wiegand 26=26, Wiegand 34=34
 		{
@@ -153,7 +155,7 @@ bool WIEGAND::DoWiegandConversion ()
 		else
 		{
 			// well time over 25 ms and bitCount !=8 , !=26, !=34 , must be noise or nothing then.
-			_lastWiegand=_sysTick;
+			_lastWiegand=sysTick;
 			_bitCount=0;			
 			_cardTemp=0;
 			_cardTempHigh=0;

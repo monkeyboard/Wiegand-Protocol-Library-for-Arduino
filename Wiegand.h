@@ -21,13 +21,12 @@ private:
 	static void ReadD0();
 	static void ReadD1();
 	static bool DoWiegandConversion ();
-	static unsigned long GetCardId (unsigned long *codehigh, unsigned long *codelow, char bitlength);
+	static unsigned long GetCardId (volatile unsigned long *codehigh, volatile unsigned long *codelow, char bitlength);
 	
-	static unsigned long 	_cardTempHigh;
-	static unsigned long 	_cardTemp;
-	static unsigned long 	_lastWiegand;
-	static unsigned long 	_sysTick;
-	static int				_bitCount;	
+	static volatile unsigned long 	_cardTempHigh;
+	static volatile unsigned long 	_cardTemp;
+	static volatile unsigned long 	_lastWiegand;
+	static volatile int				_bitCount;	
 	static int				_wiegandType;
 	static unsigned long	_code;
 };
