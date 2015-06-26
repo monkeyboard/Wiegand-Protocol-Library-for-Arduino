@@ -7,15 +7,12 @@
 #include "WProgram.h"
 #endif
 
-#define D0Pin 2			// Arduino Pin 2 Hardware interrupt
-#define D1Pin 3			// Arduino Pin 3 Hardware interrupt
-
-
 class WIEGAND {
 
 public:
 	WIEGAND();
 	void begin();
+	void begin(int pinD0, int pinIntD0, int pinD1, int pinIntD1);
 	bool available();
 	unsigned long getCode();
 	int getWiegandType();
