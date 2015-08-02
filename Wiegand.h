@@ -7,10 +7,6 @@
 #include "WProgram.h"
 #endif
 
-#define D0Pin 2			// Arduino Pin 2 Hardware interrupt
-#define D1Pin 3			// Arduino Pin 3 Hardware interrupt
-
-
 class WIEGAND {
 
 public:
