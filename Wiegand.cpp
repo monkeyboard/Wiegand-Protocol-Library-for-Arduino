@@ -32,16 +32,21 @@ bool WIEGAND::available()
 
 void WIEGAND::begin()
 {
+  begin(2,0,3,1);
+}
+
+void WIEGAND::begin(int pinD0, int pinIntD0, int pinD1, int pinIntD1)
+{
 	_lastWiegand = 0;
 	_cardTempHigh = 0;
 	_cardTemp = 0;
 	_code = 0;
 	_wiegandType = 0;
 	_bitCount = 0;  
-	pinMode(D0Pin, INPUT);					// Set D0 pin as input
-	pinMode(D1Pin, INPUT);					// Set D1 pin as input
-	attachInterrupt(0, ReadD0, FALLING);	// Hardware interrupt - high to low pulse
-	attachInterrupt(1, ReadD1, FALLING);	// Hardware interrupt - high to low pulse
+	pinMode(pinD0, INPUT);					// Set D0 pin as input
+	pinMode(pinD1, INPUT);					// Set D1 pin as input
+	attachInterrupt(pinIntD0, ReadD0, FALLING);	// Hardware interrupt - high to low pulse
+	attachInterrupt(pinIntD1, ReadD1, FALLING);	// Hardware interrupt - high to low pulse
 }
 
 void WIEGAND::ReadD0 ()
