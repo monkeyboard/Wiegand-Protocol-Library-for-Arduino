@@ -50,12 +50,16 @@ void loop() {
 }
 </code></pre>
 
-## Multiple Wiegand Readers
+
+## Contributors
+
 [Francesco Uggetti (ugge75)](https://github.com/ugge75) improved this version of library to support multiple readers for ATMEGA2560.  Please check out [his version of multiple wiegand readers library here](https://github.com/ugge75/Wiegand-Protocol-Library-for-Arduino-MEGA-2560)
 
 [Apollon77](https://github.com/Apollon77) improved interrupt safety and removed sysTick from global
 
-Written by JP Liew
+[paulfurley](https://github.com/paulfurley) added 4 bit code
+
+Written by [JP Liew](http://jpliew.com)
 
 Project home: http://www.monkeyboard.org/tutorials/82-protocol/24-wiegand-converter
 
