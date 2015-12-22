@@ -32,7 +32,12 @@ bool WIEGAND::available()
 
 void WIEGAND::begin()
 {
+#ifdef digitalPinToInterrupt
+  // newer versions of Arduino provide pin to interrupt mapping
+  begin(2,digitalPinToInterrupt(2),3,digitalPinToInterrupt(3));
+#else
   begin(2,0,3,1);
+#endif
 }
 
 void WIEGAND::begin(int pinD0, int pinIntD0, int pinD1, int pinIntD1)
