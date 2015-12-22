@@ -59,6 +59,8 @@ void loop() {
 
 [paulfurley](https://github.com/paulfurley) added 4 bit code
 
+[PaulStoffregen](https://github.com/PaulStoffregen) added Use digitalPinToInterrupt on newer Arduino software, if present
+
 Written by [JP Liew](http://jpliew.com)
 
 Project home: http://www.monkeyboard.org/tutorials/82-protocol/24-wiegand-converter
