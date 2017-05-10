@@ -15,9 +15,7 @@ The following are needed
 Create a folder named Wiegand in Arduino's libraries folder.  You will have the following folder structure:
 
 	cd arduino/libraries
-	mkdir Wiegand
-	cd Wiegand
-	git clone https://github.com/monkeyboard/Wiegand-Protocol-Library-for-Arduino.git .
+	git clone https://github.com/monkeyboard/Wiegand-Protocol-Library-for-Arduino.git Wiegand
 
 ## Arduino Sketch
 
