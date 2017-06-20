@@ -90,19 +90,18 @@ void WIEGAND::ReadD1()
 
 unsigned long WIEGAND::GetCardId (volatile unsigned long *codehigh, volatile unsigned long *codelow, char bitlength)
 {
-	unsigned long cardID=0;
 
 	if (bitlength==26)								// EM tag
-		cardID = (*codelow & 0x1FFFFFE) >>1;
+		return (*codelow & 0x1FFFFFE) >>1;
 
 	if (bitlength==34)								// Mifare 
 	{
 		*codehigh = *codehigh & 0x03;				// only need the 2 LSB of the codehigh
 		*codehigh <<= 30;							// shift 2 LSB to MSB		
 		*codelow >>=1;
-		cardID = *codehigh | *codelow;
+		return *codehigh | *codelow;
 	}
-	return cardID;
+	return *codelow;								// EM tag or Mifare without parity bits
 }
 
 char translateEnterEscapeKeyPress(char originalKeyPress) {
@@ -125,23 +124,13 @@ bool WIEGAND::DoWiegandConversion ()
 	
 	if ((sysTick - _lastWiegand) > 25)								// if no more signal coming through after 25ms
 	{
-		if ((_bitCount==26) || (_bitCount==34) || (_bitCount==8) || (_bitCount==4)) 	// bitCount for keypress=4 or 8, Wiegand 26=26, Wiegand 34=34
+		if ((_bitCount==24) || (_bitCount==26) || (_bitCount==32) || (_bitCount==34) || (_bitCount==8) || (_bitCount==4)) 	// bitCount for keypress=4 or 8, Wiegand 26=24 or 26, Wiegand 34=32 or 34
 		{
 			_cardTemp >>= 1;			// shift right 1 bit to get back the real value - interrupt done 1 left shift in advance
 			if (_bitCount>32)			// bit count more than 32 bits, shift high bits right to make adjustment
 				_cardTempHigh >>= 1;	
 
-			if((_bitCount==26) || (_bitCount==34))		// wiegand 26 or wiegand 34
-			{
-				cardID = GetCardId (&_cardTempHigh, &_cardTemp, _bitCount);
-				_wiegandType=_bitCount;
-				_bitCount=0;
-				_cardTemp=0;
-				_cardTempHigh=0;
-				_code=cardID;
-				return true;				
-			}
-			else if (_bitCount==8)		// keypress wiegand with integrity
+			if (_bitCount==8)		// keypress wiegand with integrity
 			{
 				// 8-bit Wiegand keyboard data, high nibble is the "NOT" of low nibble
 				// eg if key 1 pressed, data=E1 in binary 11100001 , high nibble=1110 , low nibble = 0001 
@@ -172,6 +161,16 @@ bool WIEGAND::DoWiegandConversion ()
 
                 return true;
             }
+			else		// wiegand 26 or wiegand 34
+			{
+				cardID = GetCardId (&_cardTempHigh, &_cardTemp, _bitCount);
+				_wiegandType=_bitCount;
+				_bitCount=0;
+				_cardTemp=0;
+				_cardTempHigh=0;
+				_code=cardID;
+				return true;
+			}
 		}
 		else
 		{
