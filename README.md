@@ -59,6 +59,10 @@ void loop() {
 
 [PaulStoffregen](https://github.com/PaulStoffregen) added Use digitalPinToInterrupt on newer Arduino software, if present
 
+[tholum](https://github.com/tholum)  Simpler Instructions
+
+[zanhecht](https://github.com/zanhecht) Recognize 24- and 32-bit
+
 Written by [JP Liew](http://jpliew.com)
 
 Project home: http://www.monkeyboard.org/tutorials/82-protocol/24-wiegand-converter
