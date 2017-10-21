@@ -4,7 +4,7 @@ The Wiegand interface is a de facto standard commonly used to connect a card rea
 
 ## NON Standard Bit Length
 
-This library was designed to decode standard Wiegand protocol with 1 START bit and 1 STOP bit. For multi-bit length protocol, please try [Wiegand NG Multi Bit Wiegand Library for Arduino](https://github.com/jpliew/Wiegand-NG-Multi-Bit-Wiegand-Library-for-Arduino).
+This library was designed to decode standard Wiegand protocol with 1 START bit, 1 STOP bit and bit length stated in the title. For multi-bit length protocol, please try [Wiegand NG Multi Bit Wiegand Library for Arduino](https://github.com/jpliew/Wiegand-NG-Multi-Bit-Wiegand-Library-for-Arduino).
 
 ## Requirements
 
