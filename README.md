@@ -2,6 +2,10 @@
 
 The Wiegand interface is a de facto standard commonly used to connect a card reader or keypad to an electronic entry system. Wiegand interface has the ability to transmit signal over long distance with a simple 3 wires connection. This library uses interrupt pins from Arduino to read the pulses from Wiegand interface and return the code and type of the Wiegand.
 
+## NON Standard Bit Length
+
+This library was designed to decode standard Wiegand protocol with 1 START bit and 1 STOP bit. For multi-bit length protocol, please try [Wiegand NG Multi Bit Wiegand Library for Arduino](https://github.com/jpliew/Wiegand-NG-Multi-Bit-Wiegand-Library-for-Arduino).
+
 ## Requirements
 
 The following are needed 
