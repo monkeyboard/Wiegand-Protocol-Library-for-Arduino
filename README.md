@@ -1,4 +1,4 @@
-# Wiegand 4 bit, 8 bit, 26 bit and 34 bit library for Arduino
+# Wiegand 4 bit, 8 bit, 26 bit, 32 bit and 34 bit library for Arduino
 
 The Wiegand interface is a de facto standard commonly used to connect a card reader or keypad to an electronic entry system. Wiegand interface has the ability to transmit signal over long distance with a simple 3 wires connection. This library uses interrupt pins from Arduino to read the pulses from Wiegand interface and return the code and type of the Wiegand.
 
