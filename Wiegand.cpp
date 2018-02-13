@@ -40,6 +40,11 @@ void WIEGAND::begin()
 #endif
 }
 
+void WIEGAND::begin(int pinD0, int pinD1)
+{
+  begin(pinD0, pinD0, pinD1, pinD1);
+}
+
 void WIEGAND::begin(int pinD0, int pinIntD0, int pinD1, int pinIntD1)
 {
 	_lastWiegand = 0;
@@ -50,8 +55,14 @@ void WIEGAND::begin(int pinD0, int pinIntD0, int pinD1, int pinIntD1)
 	_bitCount = 0;  
 	pinMode(pinD0, INPUT);					// Set D0 pin as input
 	pinMode(pinD1, INPUT);					// Set D1 pin as input
-	attachInterrupt(pinIntD0, ReadD0, FALLING);	// Hardware interrupt - high to low pulse
-	attachInterrupt(pinIntD1, ReadD1, FALLING);	// Hardware interrupt - high to low pulse
+	
+#ifdef digitalPinToInterrupt
+	attachInterrupt(digitalPinToInterrupt(pinIntD0), ReadD0, FALLING);  // Hardware interrupt - high to low pulse
+	attachInterrupt(digitalPinToInterrupt(pinIntD1), ReadD1, FALLING);  // Hardware interrupt - high to low pulse
+#else
+	attachInterrupt(pinIntD0, ReadD0, FALLING); // Hardware interrupt - high to low pulse
+	attachInterrupt(pinIntD1, ReadD1, FALLING); // Hardware interrupt - high to low pulse
+#endif
 }
 
 void WIEGAND::ReadD0 ()
