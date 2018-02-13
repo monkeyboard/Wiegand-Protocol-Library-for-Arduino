@@ -36,7 +36,7 @@ WIEGAND wg;
 
 void setup() {
 	Serial.begin(9600);  
-	wg.begin();
+	wg.begin(); // wg.begin(pinD0, pinD1) for ESP8266/ESP32
 }
 
 void loop() {
@@ -66,6 +66,8 @@ void loop() {
 [tholum](https://github.com/tholum)  Simpler Instructions
 
 [zanhecht](https://github.com/zanhecht) Recognize 24- and 32-bit
+
+[luckymallari](https://github.com/luckymallari) Simplified begin(D0, D1) for ESP(8266/32) devices.
 
 Written by [JP Liew](http://jpliew.com)
 
