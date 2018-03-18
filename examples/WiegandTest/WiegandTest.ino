@@ -4,7 +4,7 @@ WIEGAND wg;
 
 void setup() {
 	Serial.begin(9600);  
-	wg.begin();
+	wg.begin(2, 3);
 }
 
 void loop() {
