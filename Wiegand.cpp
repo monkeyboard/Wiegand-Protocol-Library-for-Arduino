@@ -1,5 +1,11 @@
 #include "Wiegand.h"
 
+#if defined(ESP8266)
+    #define INTERRUPT_ATTR ICACHE_RAM_ATTR
+#else
+    #define INTERRUPT_ATTR
+#endif
+
 volatile unsigned long WIEGAND::_cardTempHigh=0;
 volatile unsigned long WIEGAND::_cardTemp=0;
 volatile unsigned long WIEGAND::_lastWiegand=0;
@@ -50,7 +56,7 @@ void WIEGAND::begin(int pinD0, int pinD1)
 	attachInterrupt(digitalPinToInterrupt(pinD1), ReadD1, FALLING);  // Hardware interrupt - high to low pulse
 }
 
-void WIEGAND::ReadD0 ()
+INTERRUPT_ATTR void WIEGAND::ReadD0 ()
 {
 	_bitCount++;				// Increament bit count for Interrupt connected to D0
 	if (_bitCount>31)			// If bit count more than 31, process high bits
@@ -66,7 +72,7 @@ void WIEGAND::ReadD0 ()
 	_lastWiegand = millis();	// Keep track of last wiegand bit received
 }
 
-void WIEGAND::ReadD1()
+INTERRUPT_ATTR void WIEGAND::ReadD1()
 {
 	_bitCount ++;				// Increment bit count for Interrupt connected to D1
 	if (_bitCount>31)			// If bit count more than 31, process high bits
