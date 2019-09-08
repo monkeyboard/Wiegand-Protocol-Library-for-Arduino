@@ -49,8 +49,11 @@ void WIEGAND::begin(int pinD0, int pinD1)
 	attachInterrupt(digitalPinToInterrupt(pinD0), ReadD0, FALLING);  // Hardware interrupt - high to low pulse
 	attachInterrupt(digitalPinToInterrupt(pinD1), ReadD1, FALLING);  // Hardware interrupt - high to low pulse
 }
-
+#ifdef esp8266
+ICACHE_RAM_ATTR void WIEGAND::ReadD0 ()
+#else
 void WIEGAND::ReadD0 ()
+#endif
 {
 	_bitCount++;				// Increament bit count for Interrupt connected to D0
 	if (_bitCount>31)			// If bit count more than 31, process high bits
@@ -66,7 +69,11 @@ void WIEGAND::ReadD0 ()
 	_lastWiegand = millis();	// Keep track of last wiegand bit received
 }
 
+#ifdef esp8266
+ICACHE_RAM_ATTR void WIEGAND::ReadD1 ()
+#else
 void WIEGAND::ReadD1()
+#endif
 {
 	_bitCount ++;				// Increment bit count for Interrupt connected to D1
 	if (_bitCount>31)			// If bit count more than 31, process high bits
