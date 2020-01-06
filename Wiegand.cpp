@@ -61,34 +61,29 @@ void WIEGAND::begin(int pinD0, int pinD1)
 INTERRUPT_ATTR void WIEGAND::ReadD0 ()
 {
 	_bitCount++;				// Increament bit count for Interrupt connected to D0
-	if (_bitCount>31)			// If bit count more than 31, process high bits
+	
+	if(_bitCount>32)
 	{
-		_cardTempHigh |= ((0x80000000 & _cardTemp)>>31);	//	shift value to high bits
 		_cardTempHigh <<= 1;
-		_cardTemp <<=1;
+		_cardTempHigh |= ((0x80000000 & _cardTemp)>>31);
 	}
-	else
-	{
-		_cardTemp <<= 1;		// D0 represent binary 0, so just left shift card data
-	}
+	_cardTemp <<= 1;
+	
 	_lastWiegand = millis();	// Keep track of last wiegand bit received
 }
 
 INTERRUPT_ATTR void WIEGAND::ReadD1()
 {
 	_bitCount ++;				// Increment bit count for Interrupt connected to D1
-	if (_bitCount>31)			// If bit count more than 31, process high bits
+
+	if(_bitCount>32)
 	{
-		_cardTempHigh |= ((0x80000000 & _cardTemp)>>31);	// shift value to high bits
 		_cardTempHigh <<= 1;
-		_cardTemp |= 1;
-		_cardTemp <<=1;
+		_cardTempHigh |= ((0x80000000 & _cardTemp)>>31);
 	}
-	else
-	{
-		_cardTemp |= 1;			// D1 represent binary 1, so OR card data with 1 then
-		_cardTemp <<= 1;		// left shift card data
-	}
+	_cardTemp <<= 1;
+	_cardTemp |= 1;
+	
 	_lastWiegand = millis();	// Keep track of last wiegand bit received
 }
 
@@ -130,10 +125,6 @@ bool WIEGAND::DoWiegandConversion ()
 	{
 		if ((_bitCount==24) || (_bitCount==26) || (_bitCount==32) || (_bitCount==34) || (_bitCount==8) || (_bitCount==4)) 	// bitCount for keypress=4 or 8, Wiegand 26=24 or 26, Wiegand 34=32 or 34
 		{
-			_cardTemp >>= 1;			// shift right 1 bit to get back the real value - interrupt done 1 left shift in advance
-			if (_bitCount>32)			// bit count more than 32 bits, shift high bits right to make adjustment
-			_cardTempHigh >>= 1;	
-
 			if (_bitCount==8)		// keypress wiegand with integrity
 			{
 				// 8-bit Wiegand keyboard data, high nibble is the "NOT" of low nibble
