@@ -95,7 +95,10 @@ INTERRUPT_ATTR void WIEGAND::ReadD1()
 unsigned long WIEGAND::GetCardId (volatile unsigned long *codehigh, volatile unsigned long *codelow, char bitlength)
 {
 	if (bitlength==26)								// EM tag
-	return (*codelow & 0x1FFFFFE) >>1;
+		return (*codelow & 0x1FFFFFE) >>1;
+
+	if (bitlength==24)
+		return (*codelow & 0x7FFFFE) >>1;
 
 	if (bitlength==34)								// Mifare 
 	{
@@ -103,9 +106,12 @@ unsigned long WIEGAND::GetCardId (volatile unsigned long *codehigh, volatile uns
 		*codehigh <<= 30;							// shift 2 LSB to MSB		
 		*codelow >>=1;
 		return *codehigh | *codelow;
-	} else if (bitlength==32) {
+	}
+
+	if (bitlength==32) {
 		return (*codelow & 0x7FFFFFFE ) >>1;
 	}
+
 	return *codelow;								// EM tag or Mifare without parity bits
 }
 
