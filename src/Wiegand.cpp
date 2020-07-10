@@ -94,7 +94,6 @@ INTERRUPT_ATTR void WIEGAND::ReadD1()
 
 unsigned long WIEGAND::GetCardId (volatile unsigned long *codehigh, volatile unsigned long *codelow, char bitlength)
 {
-
 	if (bitlength==26)								// EM tag
 	return (*codelow & 0x1FFFFFE) >>1;
 
@@ -104,6 +103,8 @@ unsigned long WIEGAND::GetCardId (volatile unsigned long *codehigh, volatile uns
 		*codehigh <<= 30;							// shift 2 LSB to MSB		
 		*codelow >>=1;
 		return *codehigh | *codelow;
+	} else if (bitlength==32) {
+		return (*codelow & 0x7FFFFFFE ) >>1;
 	}
 	return *codelow;								// EM tag or Mifare without parity bits
 }
@@ -132,7 +133,7 @@ bool WIEGAND::DoWiegandConversion ()
 		{
 			_cardTemp >>= 1;			// shift right 1 bit to get back the real value - interrupt done 1 left shift in advance
 			if (_bitCount>32)			// bit count more than 32 bits, shift high bits right to make adjustment
-			_cardTempHigh >>= 1;	
+				_cardTempHigh >>= 1;
 
 			if (_bitCount==8)		// keypress wiegand with integrity
 			{

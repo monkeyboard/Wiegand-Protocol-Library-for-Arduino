@@ -59,6 +59,8 @@ void loop() {
 
 ## Contributors
 
+[softwarefoundry](https://github.com/softwarefoundry) added library.properties
+
 [Francesco Uggetti (ugge75)](https://github.com/ugge75) improved this version of library to support multiple readers for ATMEGA2560.  Please check out [his version of multiple wiegand readers library here](https://github.com/ugge75/Wiegand-Protocol-Library-for-Arduino-MEGA-2560)
 
 [Apollon77](https://github.com/Apollon77) improved interrupt safety and removed sysTick from global
